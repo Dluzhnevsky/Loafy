@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11134" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11134"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -673,7 +674,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Loafy" customModuleProvider="target"/>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -683,11 +684,12 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
+                    <window key="window" title="Loafy" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <value key="minSize" type="size" width="480" height="270"/>
                         <connections>
                             <outlet property="delegate" destination="B8D-0N-5wS" id="98r-iN-zZc"/>
                         </connections>
@@ -703,11 +705,69 @@
         <!--View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="Loafy" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="q0B-f7-qon">
+                                <rect key="frame" x="8" y="64" width="464" height="198"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="1tT-b3-YAX"/>
+                            </imageView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="wlo-8i-V8B">
+                                <rect key="frame" x="0.0" y="0.0" width="480" height="64"/>
+                                <subviews>
+                                    <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="32" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wa7-rb-E3P">
+                                        <rect key="frame" x="187" y="22" width="106" height="21"/>
+                                        <subviews>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="a8m-tn-dnD">
+                                                <rect key="frame" x="-6" y="-7" width="49" height="32"/>
+                                                <buttonCell key="cell" type="push" title="/\" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4gw-xE-rPM">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                            </button>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="btF-1U-rnm">
+                                                <rect key="frame" x="63" y="-7" width="49" height="32"/>
+                                                <buttonCell key="cell" type="push" title="\/" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Mqh-cb-jmU">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                            </button>
+                                        </subviews>
+                                        <visibilityPriorities>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                        </visibilityPriorities>
+                                        <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                        </customSpacing>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="Wa7-rb-E3P" firstAttribute="centerX" secondItem="wlo-8i-V8B" secondAttribute="centerX" id="1E4-qz-oBR"/>
+                                    <constraint firstItem="Wa7-rb-E3P" firstAttribute="centerY" secondItem="wlo-8i-V8B" secondAttribute="centerY" id="IPZ-Rf-03r"/>
+                                    <constraint firstItem="Wa7-rb-E3P" firstAttribute="top" relation="greaterThanOrEqual" secondItem="wlo-8i-V8B" secondAttribute="top" id="Nid-DY-Nki"/>
+                                    <constraint firstAttribute="height" constant="64" id="npA-9L-Bgd"/>
+                                    <constraint firstItem="Wa7-rb-E3P" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wlo-8i-V8B" secondAttribute="leading" id="vCN-cI-IX7"/>
+                                </constraints>
+                            </customView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="wlo-8i-V8B" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="7Ar-L0-fYv"/>
+                            <constraint firstItem="wlo-8i-V8B" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="Bg3-oH-5Gp"/>
+                            <constraint firstItem="q0B-f7-qon" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="8" id="H4l-BQ-abs"/>
+                            <constraint firstAttribute="bottom" secondItem="wlo-8i-V8B" secondAttribute="bottom" id="kGe-4T-z1g"/>
+                            <constraint firstItem="q0B-f7-qon" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="mXA-zW-Mgk"/>
+                            <constraint firstItem="wlo-8i-V8B" firstAttribute="top" secondItem="q0B-f7-qon" secondAttribute="bottom" id="pMq-aF-XAS"/>
+                            <constraint firstItem="q0B-f7-qon" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="8" id="zE2-t4-Wr7"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="customView" destination="wlo-8i-V8B" id="BhP-hp-LPY"/>
+                        <outlet property="previewImageView" destination="q0B-f7-qon" id="LO5-8S-pgF"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
