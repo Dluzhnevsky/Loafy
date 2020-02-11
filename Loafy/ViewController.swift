@@ -64,8 +64,8 @@ class ViewController: NSViewController {
         fillColor.setFill()
         
         for screen in screens {
-            let screenRect = CGRect(x: screen.frame.minX + dashWidth / 2,
-                                    y: screen.frame.minY + dashWidth / 2,
+            let screenRect = CGRect(x: screen.frame.minX + dashWidth / 2 - minX,
+                                    y: screen.frame.minY + dashWidth / 2 - minY,
                                     width: screen.frame.width - dashWidth,
                                     height: screen.frame.height - dashWidth)
             let screenPath = NSBezierPath(rect: screenRect)
