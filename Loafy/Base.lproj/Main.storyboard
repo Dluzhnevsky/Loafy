@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -718,21 +719,27 @@
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="64"/>
                                 <subviews>
                                     <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="32" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wa7-rb-E3P">
-                                        <rect key="frame" x="187" y="22" width="106" height="21"/>
+                                        <rect key="frame" x="143" y="22" width="195" height="21"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="a8m-tn-dnD">
-                                                <rect key="frame" x="-6" y="-7" width="49" height="32"/>
-                                                <buttonCell key="cell" type="push" title="/\" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4gw-xE-rPM">
+                                                <rect key="frame" x="-6" y="-7" width="89" height="32"/>
+                                                <buttonCell key="cell" type="push" title="HERE ⬆" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4gw-xE-rPM">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
+                                                <connections>
+                                                    <action selector="loadButtonPressedWithSender:" target="XfG-lQ-9wD" id="2PM-t7-L7g"/>
+                                                </connections>
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="btF-1U-rnm">
-                                                <rect key="frame" x="63" y="-7" width="49" height="32"/>
-                                                <buttonCell key="cell" type="push" title="\/" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Mqh-cb-jmU">
+                                                <rect key="frame" x="103" y="-7" width="98" height="32"/>
+                                                <buttonCell key="cell" type="push" title="⬇ THERE" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Mqh-cb-jmU">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                    <font key="font" metaFont="system"/>
+                                                    <font key="font" size="13" name=".HiraKakuInterface-W3"/>
                                                 </buttonCell>
+                                                <connections>
+                                                    <action selector="saveButtonPressedWithSender:" target="XfG-lQ-9wD" id="0uM-N1-eLX"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <visibilityPriorities>

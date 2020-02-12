@@ -11,7 +11,7 @@
 		A355757F23F1EBD800D62E2B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A355757E23F1EBD800D62E2B /* ViewController.swift */; };
 		A355758123F1EBDB00D62E2B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A355758023F1EBDB00D62E2B /* Assets.xcassets */; };
 		A355758423F1EBDB00D62E2B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A355758223F1EBDB00D62E2B /* Main.storyboard */; };
-		A355758D23F1F5A400D62E2B /* NSImage+Scale.swift in Sources */ = {isa = PBXBuildFile; fileRef = A355758C23F1F5A400D62E2B /* NSImage+Scale.swift */; };
+		A355758D23F1F5A400D62E2B /* NSImage+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A355758C23F1F5A400D62E2B /* NSImage+Operations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,7 +22,7 @@
 		A355758323F1EBDB00D62E2B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A355758523F1EBDB00D62E2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A355758623F1EBDB00D62E2B /* Loafy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Loafy.entitlements; sourceTree = "<group>"; };
-		A355758C23F1F5A400D62E2B /* NSImage+Scale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Scale.swift"; sourceTree = "<group>"; };
+		A355758C23F1F5A400D62E2B /* NSImage+Operations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Operations.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +61,7 @@
 				A355758223F1EBDB00D62E2B /* Main.storyboard */,
 				A355758523F1EBDB00D62E2B /* Info.plist */,
 				A355758623F1EBDB00D62E2B /* Loafy.entitlements */,
-				A355758C23F1F5A400D62E2B /* NSImage+Scale.swift */,
+				A355758C23F1F5A400D62E2B /* NSImage+Operations.swift */,
 			);
 			path = Loafy;
 			sourceTree = "<group>";
@@ -137,7 +137,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A355757F23F1EBD800D62E2B /* ViewController.swift in Sources */,
-				A355758D23F1F5A400D62E2B /* NSImage+Scale.swift in Sources */,
+				A355758D23F1F5A400D62E2B /* NSImage+Operations.swift in Sources */,
 				A355757D23F1EBD800D62E2B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
