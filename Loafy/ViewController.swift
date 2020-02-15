@@ -10,10 +10,6 @@ import Cocoa
 
 class ViewController: NSViewController {
     
-    // MARK: - Private Types
-    
-    private typealias RectImagePair = (NSRect, NSImage?)
-    
     // MARK: - Private Properties
     
     private let dashPattern: [CGFloat] = [24, 10]
@@ -25,7 +21,7 @@ class ViewController: NSViewController {
     @IBOutlet private weak var customView: NSView!
     
     private var selectedImageName: String?
-    private var rectImagePairs = [RectImagePair]()
+    private var screenImageModels = [ScreenImageModel]()
     
     // MARK: - Lifecycle
     
@@ -48,25 +44,35 @@ class ViewController: NSViewController {
     // MARK: - Private Methods
     
     private func processImageForCurrentSetup(image sourceImage: NSImage?) {
-        let translatedScreenRects = getTranslatedScreenRects()
+        var models = getTranslatedScreenImageModels()
         
-        guard let maxX = (translatedScreenRects.max { $0.maxX < $1.maxX })?.maxX,
-            let maxY = (translatedScreenRects.max { $0.maxY < $1.maxY })?.maxY else {
+        let translaedRects = models.compactMap { $0.translatedRect }
+        
+        guard let maxX = (translaedRects.max { $0.maxX < $1.maxX })?.maxX,
+            let maxY = (translaedRects.max { $0.maxY < $1.maxY })?.maxY else {
                 return
         }
         
         let wrappingRectSize = CGSize(width: maxX, height: maxY)
         
-        let scaledImage = sourceImage?.resizeToFit(wrappingRectSize)
+        if let scaledImage = sourceImage?.resizeToFit(wrappingRectSize) {
+            for (index, model) in models.enumerated() {
+                let translatedRect = model.translatedRect
+                let trimmedImage = scaledImage.trim(to: translatedRect)
+                let modelWithImage = ScreenImageModel(screen: model.screen,
+                                                      translatedRect: model.translatedRect,
+                                                      image: trimmedImage)
+                models[index] = modelWithImage
+            }
+        }
         
-        let rectImagePairs = sliceImagesForRects(scaledImage, rects: translatedScreenRects)
-        self.rectImagePairs = rectImagePairs
+        self.screenImageModels = models
         
-        let previewImage = makePreviewImage(rectImagePairs: rectImagePairs, wrappingRectSize: wrappingRectSize)
+        let previewImage = makePreviewImage(screenImageModels: models, wrappingRectSize: wrappingRectSize)
         previewImageView.image = previewImage
     }
     
-    private func makePreviewImage(rectImagePairs: [RectImagePair], wrappingRectSize: CGSize) -> NSImage? {
+    private func makePreviewImage(screenImageModels: [ScreenImageModel], wrappingRectSize: CGSize) -> NSImage? {
         let wrappingRectWithDashGap = CGRect(x: 0,
                                              y: 0,
                                              width: wrappingRectSize.width + dashWidth,
@@ -77,17 +83,17 @@ class ViewController: NSViewController {
         
         fillColor.setFill()
         
-        for rectImagePair in rectImagePairs {
-            let screen = rectImagePair.0
+        for screenImageModel in screenImageModels {
+            let screenFrame = screenImageModel.translatedRect
             
-            let dashedScreenRect = CGRect(x: screen.minX + dashWidth / 2,
-                                          y: screen.minY + dashWidth / 2,
-                                          width: screen.width - dashWidth,
-                                          height: screen.height - dashWidth)
+            let dashedScreenRect = CGRect(x: screenFrame.minX + dashWidth / 2,
+                                          y: screenFrame.minY + dashWidth / 2,
+                                          width: screenFrame.width - dashWidth,
+                                          height: screenFrame.height - dashWidth)
             
             dashedScreenRect.fill()
             
-            if let image = rectImagePair.1 {
+            if let image = screenImageModel.image {
                 image.draw(in: dashedScreenRect)
             }
             
@@ -103,36 +109,27 @@ class ViewController: NSViewController {
         return previewImage
     }
     
-    private func sliceImagesForRects(_ image: NSImage?, rects: [NSRect]) -> [RectImagePair] {
-        var slicedImages = [RectImagePair]()
-        
-        for rect in rects {
-            let trimmedImage = image?.trim(to: rect)
-            let rectImagePair = (rect, trimmedImage)
-            slicedImages.append(rectImagePair)
-        }
-        
-        return slicedImages
-    }
-    
-    private func getTranslatedScreenRects() -> [NSRect] {
+    private func getTranslatedScreenImageModels() -> [ScreenImageModel] {
         let screens = NSScreen.screens
         guard let minX = (screens.min { $0.frame.minX < $1.frame.minX })?.frame.minX,
             let minY = (screens.min { $0.frame.minY < $1.frame.minY })?.frame.minY else {
                 return []
         }
         
-        var translatedScreenRects = [NSRect]()
+        var translatedScreenImageModels = [ScreenImageModel]()
         
         for screen in screens {
             let translatedScreenRect = CGRect(x: screen.frame.minX - minX,
                                               y: screen.frame.minY - minY,
                                               width: screen.frame.width,
                                               height: screen.frame.height)
-            translatedScreenRects.append(translatedScreenRect)
+            let model = ScreenImageModel(screen: screen,
+                                         translatedRect: translatedScreenRect,
+                                         image: nil)
+            translatedScreenImageModels.append(model)
         }
         
-        return translatedScreenRects
+        return translatedScreenImageModels
     }
     
     private func loadImage(at url: URL) {
@@ -144,15 +141,17 @@ class ViewController: NSViewController {
         processImageForCurrentSetup(image: selectedImage)
     }
     
-    private func saveResultImages(to destinationURL: URL) {
-        let images = rectImagePairs.compactMap { $0.1 }
+    private func saveResultImages(to destinationURL: URL, shouldSetWallpapers: Bool) {
         let imagesCommonName = selectedImageName ?? "Image"
+        let models = self.screenImageModels
         
-        for (index, image) in images.enumerated() {
+        for (index, model) in models.enumerated() {
+            let screen = model.screen
             let imageName = imagesCommonName + "-\(index + 1).png"
             let imageURL = destinationURL.appendingPathComponent(imageName)
             
-            guard let tiffRepresentation = image.tiffRepresentation,
+            guard let image = model.image,
+                let tiffRepresentation = image.tiffRepresentation,
                 let bitmapImage = NSBitmapImageRep(data: tiffRepresentation) else {
                     continue
             }
@@ -161,9 +160,34 @@ class ViewController: NSViewController {
             
             do {
                 try pngRepresentation?.write(to: imageURL)
+                try NSWorkspace.shared.setDesktopImageURL(imageURL, for: screen, options: [:])
             }
             catch {
                 print(error)
+            }
+        }
+    }
+    
+    private func saveImagesWithPanelPrompt(shouldSetWallpapers: Bool) {
+        let saveButtonPrompt = shouldSetWallpapers
+            ? "Save and Set"
+            : "Save"
+        
+        let savePanel = NSOpenPanel()
+        savePanel.allowsMultipleSelection = false
+        savePanel.canChooseDirectories = true
+        savePanel.canCreateDirectories = false
+        savePanel.canChooseFiles = false
+        savePanel.prompt = saveButtonPrompt
+        savePanel.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.modalPanelWindow)))
+        
+        savePanel.begin { [weak self] (result) in
+            if result == NSApplication.ModalResponse.OK {
+                guard let destinationURL = savePanel.url else {
+                    return
+                }
+                
+                self?.saveResultImages(to: destinationURL, shouldSetWallpapers: shouldSetWallpapers)
             }
         }
     }
@@ -187,23 +211,12 @@ class ViewController: NSViewController {
         }
     }
     
-    @IBAction private func saveButtonPressed(sender: AnyObject) {
-        let savePanel = NSOpenPanel()
-        savePanel.allowsMultipleSelection = false
-        savePanel.canChooseDirectories = true
-        savePanel.canCreateDirectories = false
-        savePanel.canChooseFiles = false
-        savePanel.prompt = "Save here"
-        savePanel.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.modalPanelWindow)))
-        
-        savePanel.begin { [weak self] (result) in
-            if result == NSApplication.ModalResponse.OK {
-                guard let destinationURL = savePanel.url else {
-                    return
-                }
-                
-                self?.saveResultImages(to: destinationURL)
-            }
-        }
+    @IBAction private func setButtonPressed(sender: AnyObject) {
+        saveImagesWithPanelPrompt(shouldSetWallpapers: true)
     }
+    
+    @IBAction private func saveButtonPressed(sender: AnyObject) {
+        saveImagesWithPanelPrompt(shouldSetWallpapers: false)
+    }
+    
 }
